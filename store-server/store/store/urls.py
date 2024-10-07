@@ -16,13 +16,28 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from products.views import index
-
+from products.views import *
 from django.conf.urls.static import static
 from django.conf import settings
+
+from rest_framework import routers
+
+router = routers.SimpleRouter()
+router.register(r'products', ProductViewSet)
+router1 = routers.SimpleRouter()
+router1.register(r'categories', CategoriesViewSet)
+
+
+
+
+
+
 urlpatterns = [
+    path('api/v1/', include(router.urls)),
+    path('api/v1/basket', BasketAPIView.as_view()),
+    path('api/v1/', include(router1.urls)),
     path('admin/', admin.site.urls),
-    path('', index, name = 'index'),
+    path('', index, name='index'),
     path('products/', include('products.urls', namespace='products')),
     path('users/', include('users.urls', namespace='users')),
 ]
